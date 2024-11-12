@@ -4,7 +4,7 @@
 -- ! try to be consistent with the version number :) V uppercase , number
 
 -- Create table for users
-CREATE TABLE "User" (
+CREATE TABLE Userr (
                         id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                         role VARCHAR(255) NOT NULL,
                         username VARCHAR(255) NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE "User" (
 CREATE TABLE Event (
                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                        description VARCHAR(255) NOT NULL,
-                       organizerid BIGINT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+                       organizerid BIGINT NOT NULL REFERENCES Userr(id) ON DELETE CASCADE,
                        date TIMESTAMP NOT NULL,
                        participantcount BIGINT,
                        location VARCHAR(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE Post (
 -- Create table for comments
 CREATE TABLE Comment (
                          id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                         userid BIGINT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+                         userid BIGINT NOT NULL REFERENCES Userr(id) ON DELETE CASCADE,
                          postid BIGINT NOT NULL REFERENCES Post(id) ON DELETE CASCADE,
                          message VARCHAR(255) NOT NULL
 );
