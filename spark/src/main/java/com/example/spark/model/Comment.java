@@ -13,18 +13,19 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "userid")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "eventid")
-    private Event event;
 
     @Column(name = "message")
     private String message;
+
+    // Relationship with User
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
+    private User user;
+
+    // Relationship with Post
+    @ManyToOne
+    @JoinColumn(name = "postid", nullable = false)
+    private Post post;
 }
 

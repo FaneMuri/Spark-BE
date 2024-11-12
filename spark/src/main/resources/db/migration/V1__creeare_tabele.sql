@@ -26,13 +26,16 @@ CREATE TABLE Event (
 CREATE TABLE Post (
                       id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                       name VARCHAR(255) NOT NULL,
-                      eventid BIGINT NOT NULL REFERENCES Event(id) ON DELETE CASCADE
+                      description VARCHAR(255) NOT NULL,
+                      eventid BIGINT NOT NULL REFERENCES Event(id) ON DELETE CASCADE,
+                      image BYTEA
+
 );
 
 -- Create table for comments
 CREATE TABLE Comment (
                          id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                          userid BIGINT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
-                         eventid BIGINT NOT NULL REFERENCES Event(id) ON DELETE CASCADE,
+                         postid BIGINT NOT NULL REFERENCES Post(id) ON DELETE CASCADE,
                          message VARCHAR(255) NOT NULL
 );
