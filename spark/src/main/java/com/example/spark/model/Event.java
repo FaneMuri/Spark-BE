@@ -1,9 +1,12 @@
 package com.example.spark.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -16,18 +19,13 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "organizerid")
-    private User organizer;
-
     @Column(name = "date")
-    private LocalDateTime date;
+    private Timestamp date;
 
     @Column(name = "participantcount")
     private Long participantCount;
@@ -35,14 +33,16 @@ public class Event {
     @Column(name = "location")
     private String location;
 
-    @Lob
+
     @Column(name = "image")
     private byte[] image;
 
+    // Relationship with User (organizer)
+    @ManyToOne
+    @JoinColumn(name = "organizerid", nullable = false)
+    private User organizer;
+
+    // Relationship with Post
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
 }
-
