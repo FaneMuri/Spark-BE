@@ -30,10 +30,9 @@ public class EventController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.saveEvent(event);
+    public Event createEvent(@RequestBody EventRequest eventRequest) {
+        return eventService.saveEvent(eventRequest);
     }
 
     @DeleteMapping("/{id}")
