@@ -2,6 +2,7 @@ package com.example.spark.model;
 
 import com.example.spark.model.Comment;
 import com.example.spark.model.Event;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class User {
 
     // Relationship with Event
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Event> organizedEvents;
 
     // Relationship with Comment

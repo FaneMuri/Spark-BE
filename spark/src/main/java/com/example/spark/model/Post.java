@@ -1,5 +1,6 @@
 package com.example.spark.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Post {
     // Relationship with Event
     @ManyToOne
     @JoinColumn(name = "eventid", nullable = false)
+    @JsonIgnore
     private Event event;
 
     // Relationship with Comment

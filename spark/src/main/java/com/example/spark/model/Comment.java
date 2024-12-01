@@ -1,5 +1,6 @@
 package com.example.spark.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,11 +22,13 @@ public class Comment {
     // Relationship with User
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
+    @JsonIgnore
     private User user;
 
     // Relationship with Post
     @ManyToOne
     @JoinColumn(name = "postid", nullable = false)
+    @JsonIgnore
     private Post post;
 }
 
