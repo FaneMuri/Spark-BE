@@ -25,6 +25,12 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "fullname")
+    private String fullname;
+
     @Column(name = "username", unique = true)
     private String username;
 

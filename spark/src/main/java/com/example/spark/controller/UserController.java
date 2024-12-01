@@ -41,4 +41,16 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<User> login(@RequestBody User user) {
+        return userService.login(user)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<User> signup(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
 }

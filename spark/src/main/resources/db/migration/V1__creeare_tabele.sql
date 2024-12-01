@@ -8,7 +8,9 @@ CREATE TABLE Userr (
                         id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                         role VARCHAR(255) NOT NULL,
                         username VARCHAR(255) NOT NULL UNIQUE,
-                        password VARCHAR(255) NOT NULL
+                        password VARCHAR(255) NOT NULL,
+                        email VARCHAR(255) NOT NULL UNIQUE,
+                        fullname VARCHAR(255) NOT NULL
 );
 
 -- Create table for events
