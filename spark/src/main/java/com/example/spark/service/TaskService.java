@@ -58,12 +58,14 @@ public class TaskService {
             comments.add(commentTaskRepository.getReferenceById(i));
         }
         task.setComments(comments);
-        List<User> users  = new ArrayList<>();
-        for(var i : taskr.getUserIDs())
-        {
-            users.add(userTaskRepository.getReferenceById(i));
+        List<User> users = new ArrayList<>();
+        for (var i : taskr.getUserIDs()) {
+            User user = userTaskRepository.findById(i).orElseThrow(() -> new RuntimeException("User not found"));
+            users.add(user);
+            user.getTasks().add(task);
         }
         task.setUsers(users);
+
         return taskRepository.save(task);
     }
 
