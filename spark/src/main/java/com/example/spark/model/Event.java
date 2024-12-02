@@ -33,7 +33,6 @@ public class Event {
     @Column(name = "location")
     private String location;
 
-
     @Column(name = "image")
     private byte[] image;
 
