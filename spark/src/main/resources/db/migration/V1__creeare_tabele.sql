@@ -13,6 +13,16 @@ CREATE TABLE Userr (
                         fullname VARCHAR(255) NOT NULL
 );
 
+-- Create table for tokens
+CREATE TABLE Token (
+                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                        token VARCHAR(4096) NOT NULL,
+                        token_type VARCHAR(255) NOT NULL,
+                        revoked BOOLEAN NOT NULL,
+                        expired BOOLEAN NOT NULL,
+                        user_id BIGINT NOT NULL REFERENCES Userr(id) ON DELETE CASCADE
+);
+
 -- Create table for events
 CREATE TABLE Event (
                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
