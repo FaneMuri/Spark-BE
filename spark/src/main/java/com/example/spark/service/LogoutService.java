@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class LogoutService implements LogoutHandler {
 
     private final TokenRepository tokenRepository;
+    private final JwtService jwtService;
 
     @Override
     public void logout(
@@ -27,7 +28,7 @@ public class LogoutService implements LogoutHandler {
             return;
         }
         jwt = authHeader.substring(7);
-        var storedToken = tokenRepository.findByToken(jwt)
+        var storedToken = tokenRepository.findById(Long.valueOf(jwtService.extractJti(jwt)))
                 .orElse(null);
         if (storedToken != null) {
             storedToken.setExpired(true);

@@ -1,5 +1,6 @@
 package com.example.spark;
 
+import com.example.spark.model.User;
 import com.example.spark.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
@@ -22,8 +25,18 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> {
+            Optional<User> user = repository.findByUsername(username);
+            if (user.isEmpty()) {
+                user = repository.findById(Long.valueOf(username));
+                if (user.isPresent()) {
+                    return (UserDetails) user.get();
+                } else {
+                    throw new UsernameNotFoundException("User not found");
+                }
+            }
+            return (UserDetails) user.get();
+        };
     }
 
     @Bean

@@ -31,23 +31,22 @@ public class AuthenticationService {
         );
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        Token t = saveUserToken(user);
+        var jwtToken = jwtService.generateToken(user, t.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    private Token saveUserToken(User user) {
         var token = Token.builder()
                 .user(user)
-                .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
                 .build();
-        tokenRepository.save(token);
+        return tokenRepository.save(token);
     }
 
     private void revokeAllUserTokens(User user) {

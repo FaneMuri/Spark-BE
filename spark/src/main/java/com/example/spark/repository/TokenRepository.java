@@ -6,7 +6,9 @@ import java.util.Optional;
 import com.example.spark.model.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
     @Query(value = """
@@ -16,5 +18,5 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
       """)
     List<Token> findAllValidTokenByUser(Long id);
 
-    Optional<Token> findByToken(String token);
+    Optional<Token> findById(Long id);
 }

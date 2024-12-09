@@ -17,9 +17,6 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(unique = true)
-    public String token;
-
     @Enumerated(EnumType.STRING)
     public TokenType tokenType = TokenType.BEARER;
 
@@ -27,7 +24,7 @@ public class Token {
 
     public boolean expired;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     public User user;
 }
