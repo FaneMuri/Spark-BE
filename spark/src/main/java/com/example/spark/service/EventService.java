@@ -33,7 +33,7 @@ public class EventService {
     public Event saveEvent(EventRequest eventRequest) {
 
 
-        User organizer = userRepository.findById(eventRequest.getOrganizerId())
+        User organizer = userRepository.findById(eventRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
 
         Event event = new Event();
@@ -43,6 +43,7 @@ public class EventService {
         event.setLocation(eventRequest.getLocation());
         event.setImage(eventRequest.getImage());
         event.setOrganizer(organizer);
+        event.setName(eventRequest.getName());
 
         return eventRepository.save(event);
     }

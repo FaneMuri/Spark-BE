@@ -24,6 +24,9 @@ public class Event {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "date")
     private Timestamp date;
 
