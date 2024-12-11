@@ -30,6 +30,7 @@ public class SecurityConfiguration {
             "/api/users/logout/**",
             "/api/users/login",
             "/api/users",
+            "/api/users/token/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -49,11 +50,11 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
-                                .permitAll()
-                                .anyRequest()
+                                req.requestMatchers(WHITE_LIST_URL)
+                                        .permitAll()
+                                        .anyRequest()
 //                                .permitAll()
-                                .authenticated()
+                                        .authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -68,3 +69,5 @@ public class SecurityConfiguration {
         return http.build();
     }
 }
+
+

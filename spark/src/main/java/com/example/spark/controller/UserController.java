@@ -1,8 +1,11 @@
+
 package com.example.spark.controller;
 
 import com.example.spark.auth.AuthenticationRequest;
 import com.example.spark.auth.AuthenticationResponse;
+import com.example.spark.model.Token;
 import com.example.spark.model.User;
+import com.example.spark.repository.TokenRepository;
 import com.example.spark.service.AuthenticationService;
 import com.example.spark.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +65,12 @@ public class UserController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity<User> signup(@RequestBody User user) {
         return ResponseEntity.ok(userService.saveUser(user));
+    }
+
+    @RequestMapping(value = "/token/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Token>> getAllTokensOfUser(@PathVariable Long id) {
+        var user = userService.findUserById(id);
+        return user.map(value -> ResponseEntity.of(Optional.ofNullable(value.getTokens())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

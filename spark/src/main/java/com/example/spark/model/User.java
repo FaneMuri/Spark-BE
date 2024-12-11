@@ -1,3 +1,5 @@
+
+
 package com.example.spark.model;
 
 import com.example.spark.model.Comment;
@@ -52,6 +54,7 @@ public class User implements UserDetails {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Token> tokens;
 
     @Override
