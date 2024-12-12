@@ -38,7 +38,7 @@ public class Event {
 
 
     @Column(name = "image")
-    private byte[] image;
+    private String image;
 
     // Relationship with User (organizer)
     @ManyToOne

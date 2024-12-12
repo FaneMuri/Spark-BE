@@ -15,5 +15,5 @@ public class EventRequest {
     private Timestamp date;
     private Long participantCount;
     private String location;
-    private byte[] image;
+    private String image;
 }

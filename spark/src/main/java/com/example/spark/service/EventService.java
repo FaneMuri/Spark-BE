@@ -2,6 +2,7 @@ package com.example.spark.service;
 
 import com.example.spark.controller.EventRequest;
 import com.example.spark.model.Event;
+import com.example.spark.model.Role;
 import com.example.spark.model.User;
 import com.example.spark.repository.EventRepository;
 import com.example.spark.repository.UserRepository;
@@ -33,8 +34,8 @@ public class EventService {
     public Event saveEvent(EventRequest eventRequest) {
 
 
-        User organizer = userRepository.findById(eventRequest.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
+        /*User organizer = userRepository.findById(eventRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Organizer not found"));*/
 
         Event event = new Event();
         event.setDescription(eventRequest.getDescription());
@@ -42,9 +43,9 @@ public class EventService {
         event.setParticipantCount(eventRequest.getParticipantCount());
         event.setLocation(eventRequest.getLocation());
         event.setImage(eventRequest.getImage());
-        event.setOrganizer(organizer);
         event.setName(eventRequest.getName());
-
+        User organizer = userRepository.findById(1L).get();
+        event.setOrganizer(organizer);
         return eventRepository.save(event);
     }
 
