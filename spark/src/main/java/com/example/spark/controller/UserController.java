@@ -1,5 +1,6 @@
 package com.example.spark.controller;
 
+import com.example.spark.model.DTO.UserSignupDTO;
 import com.example.spark.model.User;
 import com.example.spark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,9 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<User> signup(@RequestBody User user) {
-        return ResponseEntity.ok(userService.saveUser(user));
+    @PostMapping("/signup")
+    public ResponseEntity<UserSignupDTO> signup(@RequestBody UserSignupDTO signupDTO) {
+        User user = userService.createUserFromDTO(signupDTO);
+        return ResponseEntity.ok(UserSignupDTO.convertToDTO(userService.saveUser(user)));
     }
 }
