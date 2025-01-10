@@ -1,5 +1,6 @@
 package com.example.spark.service;
 
+import com.example.spark.model.DTO.UserLoginDTO;
 import com.example.spark.model.DTO.UserSignupDTO;
 import com.example.spark.model.Role;
 import com.example.spark.model.User;
@@ -37,7 +38,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Optional<User> login(User user) {
+    public Optional<User> login(UserLoginDTO user) {
         return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 
