@@ -35,6 +35,7 @@ public class EventController {
     }
     @PostMapping
     public ResponseEntity<HttpStatus> createEvent(@RequestBody EventRequest eventRequest) {
+
         Event event = eventService.saveEvent(eventRequest);
         if (event != null) {
             return new ResponseEntity(HttpStatus.CREATED);
