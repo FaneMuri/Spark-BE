@@ -1,5 +1,6 @@
 package com.example.spark.controller;
 
+import com.example.spark.model.DTO.AddPostDTO;
 import com.example.spark.model.Post;
 import com.example.spark.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
+    public Post createPost(@RequestBody AddPostDTO postDTO) {
+        Post post = postService.createPostFromDTO(postDTO);
         return postService.savePost(post);
     }
 
