@@ -37,7 +37,7 @@ public class Event {
     private String location;
 
     @Column(name = "image")
-    private String image;
+    private byte[] image;
 
     // Relationship with User (organizer)
     @ManyToOne
