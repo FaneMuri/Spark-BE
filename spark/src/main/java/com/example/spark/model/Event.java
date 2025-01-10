@@ -36,7 +36,6 @@ public class Event {
     @Column(name = "location")
     private String location;
 
-
     @Column(name = "image")
     private String image;
 
