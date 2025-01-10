@@ -29,6 +29,7 @@ public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/users/login/**",
             "/api/users/logout/**",
             "/api/users/login",
+            "/api/users/logout",
             "/api/users",
             "/api/users/token/**",
             "/v2/api-docs",
@@ -47,7 +48,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                                 req.requestMatchers(WHITE_LIST_URL)
@@ -63,10 +64,10 @@ public class SecurityConfiguration {
                         logout.logoutUrl("/api/users/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
+                ).cors().and().build()
         ;
 
-        return http.build();
+//        return http.build();
     }
 }
 

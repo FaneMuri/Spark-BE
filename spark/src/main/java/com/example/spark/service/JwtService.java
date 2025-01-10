@@ -24,6 +24,10 @@ public class JwtService {
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
+    public String extractIdFromAuthorization(String authorization) {
+        return extractUsername(authorization.split(" ")[1]);
+    }
+
     public String extractJti(String token) {
         return extractClaim(token, Claims::getId);
     }
