@@ -13,5 +13,5 @@ public class AddPostDTO {
     private long eventId;
     private String name;
     private String description;
-    private byte[] image;
+    private String image;
 }

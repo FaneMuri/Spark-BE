@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,8 @@ public class PostService {
 
         post.setName(addPostDTO.getName());
         post.setDescription(addPostDTO.getDescription());
-        post.setImage(addPostDTO.getImage());
         post.setComments(new ArrayList<>());
-
+        post.setImage(Base64.getMimeDecoder().decode(addPostDTO.getImage()));
         return post;
     }
 }
