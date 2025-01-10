@@ -37,10 +37,10 @@ public class EventController {
     public ResponseEntity<HttpStatus> createEvent(@RequestBody EventRequest eventRequest) {
         Event event = eventService.saveEvent(eventRequest);
         if (event != null) {
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
         else {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
