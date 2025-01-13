@@ -4,10 +4,10 @@ import com.example.spark.model.Comment;
 import com.example.spark.model.DTO.AddPostCommentDTO;
 import com.example.spark.service.CommentService;
 import com.example.spark.service.JwtService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/post-comments")
@@ -26,10 +26,13 @@ public class PostCommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentPostById(@PathVariable Long id) {
-        return commentService.findCommentPostById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public AddPostCommentDTO getCommentPostById(@PathVariable Long id) {
+        Optional<Comment> commentPostById = commentService.findCommentPostById(id);
+        AddPostCommentDTO commentDto = new AddPostCommentDTO();
+        commentDto.setPostId(commentPostById.get().getPost().getId());
+        commentDto.setUserId(commentPostById.get().getUser().getId());
+        commentDto.setMessage(commentPostById.get().getMessage());
+        return commentDto;
     }
 
     @PostMapping
