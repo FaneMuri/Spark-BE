@@ -24,6 +24,9 @@ public class Event {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "date")
     private Timestamp date;
 
@@ -32,7 +35,6 @@ public class Event {
 
     @Column(name = "location")
     private String location;
-
 
     @Column(name = "image")
     private byte[] image;

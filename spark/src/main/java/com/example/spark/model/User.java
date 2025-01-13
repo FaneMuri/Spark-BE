@@ -81,4 +81,14 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // Relationship with Task
+    @ManyToMany
+    @JoinTable(
+            name = "user_task",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id")
+    )
+    @JsonIgnore
+    private List<Task> tasks;
 }

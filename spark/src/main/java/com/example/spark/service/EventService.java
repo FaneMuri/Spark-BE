@@ -2,12 +2,14 @@ package com.example.spark.service;
 
 import com.example.spark.controller.EventRequest;
 import com.example.spark.model.Event;
+import com.example.spark.model.Role;
 import com.example.spark.model.User;
 import com.example.spark.repository.EventRepository;
 import com.example.spark.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,17 +35,18 @@ public class EventService {
     public Event saveEvent(EventRequest eventRequest) {
 
 
-        User organizer = userRepository.findById(eventRequest.getOrganizerId())
-                .orElseThrow(() -> new IllegalArgumentException("Organizer not found"));
+        /*User organizer = userRepository.findById(eventRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Organizer not found"));*/
 
         Event event = new Event();
         event.setDescription(eventRequest.getDescription());
         event.setDate(eventRequest.getDate());
         event.setParticipantCount(eventRequest.getParticipantCount());
         event.setLocation(eventRequest.getLocation());
-        event.setImage(eventRequest.getImage());
+        event.setImage(Base64.getDecoder().decode(eventRequest.getImage()));
+        event.setName(eventRequest.getName());
+        User organizer = userRepository.findById(1L).get();
         event.setOrganizer(organizer);
-
         return eventRepository.save(event);
     }
 

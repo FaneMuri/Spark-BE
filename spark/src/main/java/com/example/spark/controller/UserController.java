@@ -4,6 +4,8 @@ package com.example.spark.controller;
 import com.example.spark.auth.AuthenticationRequest;
 import com.example.spark.auth.AuthenticationResponse;
 import com.example.spark.model.Token;
+import com.example.spark.model.DTO.UserLoginDTO;
+import com.example.spark.model.DTO.UserSignupDTO;
 import com.example.spark.model.User;
 import com.example.spark.repository.TokenRepository;
 import com.example.spark.service.AuthenticationService;
@@ -54,17 +56,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody User user) {
-        Optional<User> foundUser = userService.login(user);
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserLoginDTO loginDTO {
+        Optional<User> foundUser = userService.login(loginDTO);
         if (foundUser.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(authService.authenticate(new AuthenticationRequest(user.getUsername(), user.getPassword())));
+        return ResponseEntity.ok(authService.authenticate(new AuthenticationRequest(loginDTO.getUsername(), loginDTO.getPassword())));
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<User> signup(@RequestBody User user) {
-        return ResponseEntity.ok(userService.saveUser(user));
+    @PostMapping("/signup")
+    public ResponseEntity<UserSignupDTO> signup(@RequestBody UserSignupDTO signupDTO) {
+        User user = userService.createUserFromDTO(signupDTO);
+        return ResponseEntity.ok(UserSignupDTO.convertToDTO(userService.saveUser(user)));
     }
 
     @RequestMapping(value = "/token/{id}", method = RequestMethod.GET)

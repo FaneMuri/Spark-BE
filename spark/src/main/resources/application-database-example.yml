@@ -1,11 +1,11 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/spark_db
-    username: victor
-    password: 5YTJ76WZ8M3mgn7TgRVRUnD2h
+    username: postgres
+    password: pocpoc
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: none
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
