@@ -1,14 +1,22 @@
+
 package com.example.spark.controller;
 
+import com.example.spark.auth.AuthenticationRequest;
+import com.example.spark.auth.AuthenticationResponse;
+import com.example.spark.model.Token;
 import com.example.spark.model.DTO.UserLoginDTO;
 import com.example.spark.model.DTO.UserSignupDTO;
 import com.example.spark.model.User;
+import com.example.spark.repository.TokenRepository;
+import com.example.spark.service.AuthenticationService;
 import com.example.spark.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -16,9 +24,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final AuthenticationService authService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticationService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @GetMapping
@@ -45,15 +56,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(@RequestBody UserLoginDTO loginDTO) {
-        return userService.login(loginDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserLoginDTO loginDTO) {
+        Optional<User> foundUser = userService.login(loginDTO);
+        if (foundUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(authService.authenticate(new AuthenticationRequest(loginDTO.getUsername(), loginDTO.getPassword())));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<UserSignupDTO> signup(@RequestBody UserSignupDTO signupDTO) {
         User user = userService.createUserFromDTO(signupDTO);
         return ResponseEntity.ok(UserSignupDTO.convertToDTO(userService.saveUser(user)));
+    }
+
+    @RequestMapping(value = "/token/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Token>> getAllTokensOfUser(@PathVariable Long id) {
+        var user = userService.findUserById(id);
+        return user.map(value -> ResponseEntity.of(Optional.ofNullable(value.getTokens())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

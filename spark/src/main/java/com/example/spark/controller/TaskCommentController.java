@@ -5,6 +5,7 @@ import com.example.spark.model.CommentTask;
 import com.example.spark.model.DTO.AddPostCommentDTO;
 import com.example.spark.model.DTO.AddTaskCommentDTO;
 import com.example.spark.service.CommentService;
+import com.example.spark.service.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +15,11 @@ import java.util.List;
 @RequestMapping("/api/task-comments")
 public class TaskCommentController {
     private final CommentService commentService;
+    private final JwtService jwtService;
 
-    public TaskCommentController(CommentService commentService) {
+    public TaskCommentController(CommentService commentService, JwtService jwtService) {
         this.commentService = commentService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -32,7 +35,12 @@ public class TaskCommentController {
     }
 
     @PostMapping
-    public CommentTask createCommentTask(@RequestBody AddTaskCommentDTO commentDTO) {
+    public CommentTask createCommentTask(
+            @RequestHeader("Authorization") String auth,
+            @RequestBody AddTaskCommentDTO commentDTO
+    ) {
+        Long userId = Long.valueOf(jwtService.extractIdFromAuthorization(auth));
+        commentDTO.setUserId(userId);
         CommentTask commentTask = commentService.createTaskCommentFromDTO(commentDTO);
         return commentService.saveCommentTask(commentTask);
     }

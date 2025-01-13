@@ -2,11 +2,14 @@ package com.example.spark.controller;
 
 import com.example.spark.model.Event;
 import com.example.spark.service.EventService;
+import com.example.spark.service.JwtService;
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +19,21 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final JwtService jwtService;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, JwtService jwtService) {
         this.eventService = eventService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
-    public List<Event> getAllEvents() {
+    public List<Event> getAllEvents(
+            @RequestHeader("Authorization") String auth
+    ) {
+        // This is how you get the user id
+        // vvvvv
+        System.out.println(jwtService.extractIdFromAuthorization(auth));
         return eventService.findAllEvents();
     }
 
