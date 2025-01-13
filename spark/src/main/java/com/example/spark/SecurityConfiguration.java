@@ -26,8 +26,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/users/login/**",
+    private static final String[] WHITE_LIST_URL = {
+            "/api/users/signup/**",
+            "/api/users/login/**",
             "/api/users/logout/**",
+            "/api/users/signup",
             "/api/users/login",
             "/api/users/logout",
             "/api/users",

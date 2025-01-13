@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserLoginDTO loginDTO {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserLoginDTO loginDTO) {
         Optional<User> foundUser = userService.login(loginDTO);
         if (foundUser.isEmpty()) {
             return ResponseEntity.notFound().build();
