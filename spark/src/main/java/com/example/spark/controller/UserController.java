@@ -3,6 +3,7 @@ package com.example.spark.controller;
 
 import com.example.spark.auth.AuthenticationRequest;
 import com.example.spark.auth.AuthenticationResponse;
+import com.example.spark.model.DTO.UpdateRoleDTO;
 import com.example.spark.model.Token;
 import com.example.spark.model.DTO.UserLoginDTO;
 import com.example.spark.model.DTO.UserSignupDTO;
@@ -58,6 +59,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/role")
+    public ResponseEntity<UserSignupDTO> updateUserRole(@RequestBody UpdateRoleDTO user) {
+        var x = userService.updateUserRole(user.getId(),user.getRole());
+        return ResponseEntity.ok(UserSignupDTO.convertToDTO(x));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

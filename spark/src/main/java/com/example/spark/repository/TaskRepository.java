@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Long> {
     List<Task> findAllByEvent_Id(Long eventID);
+    Task findByName(String name);
 }

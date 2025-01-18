@@ -13,15 +13,13 @@ public class SparkApplication {
     public static void main(String[] args) {
         SpringApplication.run(SparkApplication.class, args);
     }
-
-// for allowed origins put the angular server  ex : http://localhost:4200
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("http://localhost:*")
+                        .allowedOriginPatterns("http://localhost:*", "http://192.168.81.84:*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

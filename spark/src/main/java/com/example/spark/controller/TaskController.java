@@ -1,11 +1,14 @@
 package com.example.spark.controller;
 
+import com.example.spark.model.DTO.TaskDTO;
 import com.example.spark.model.Task;
+import com.example.spark.model.TaskStatus;
 import com.example.spark.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,19 +28,31 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        return taskService.findTaskById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public List<TaskDTO> getAllTasksByEventId(@PathVariable Long id) {
+        var x = taskService.findAllTaskByEvent_Id(id);
+        List<TaskDTO> tasks = new ArrayList<>();
+        for(var task : x){
+            if(task.getStatus()== TaskStatus.TO_DO)
+            {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setStatus("TO_DO");
+                taskDTO.setName(task.getName());
+                taskDTO.setDescription(task.getDescription());
+                if(!task.getUsers().isEmpty())
+                    taskDTO.setUser(task.getUsers().get(0));
+                tasks.add(taskDTO);
+            }
+        };
+        return tasks;
     }
 
-    @GetMapping("/event={id}")
-    public List<Task> getAllTasksByEvent(@PathVariable Long id) {
-        return taskService.findAllTaskByEvent_Id(id);
+    @PutMapping
+    public TaskDTO updateStatus(@RequestBody TaskDTO taskDTO) {
+        return taskService.updateStatus(taskDTO);
     }
 
     @PostMapping
-    public Task createTask(@RequestBody TaskRequest task) {return taskService.saveTask(task);}
+    public Task createTask(@RequestBody TaskDTO task) {return taskService.saveTask(task);}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {

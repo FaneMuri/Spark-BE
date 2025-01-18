@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class EventRequest implements Serializable {
-    private Long id ;
+    private Long id;
     private String name;
     private String description;
     private Timestamp date;

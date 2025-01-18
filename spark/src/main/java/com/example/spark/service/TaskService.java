@@ -2,6 +2,7 @@ package com.example.spark.service;
 
 import com.example.spark.controller.TaskRequest;
 import com.example.spark.model.*;
+import com.example.spark.model.DTO.TaskDTO;
 import com.example.spark.repository.CommentTaskRepository;
 import com.example.spark.repository.EventRepository;
 import com.example.spark.repository.TaskRepository;
@@ -43,33 +44,33 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public Task saveTask(TaskRequest taskr) {
+    public Task saveTask(TaskDTO taskr) {
         Task task = new Task();
-        task.setName(taskr.getTaskName());
-        task.setDescription(taskr.getTaskDescription());
-        task.setStatus(TaskStatus.valueOf(taskr.getTaskStatus()));
-        LocalDateTime deadline = taskr.getTaskDeadline().toLocalDateTime();
+        task.setName(taskr.getName());
+        task.setDescription(taskr.getDescription());
+        task.setStatus(TaskStatus.TO_DO);
+        LocalDateTime deadline = taskr.getDeadline();
         task.setDeadline(deadline);
         Event event = eventRepository.getReferenceById(taskr.getEventID());
         task.setEvent(event);
-        List<CommentTask> comments  = new ArrayList<>();
-        for(var i : taskr.getCommentIDs())
-        {
-            comments.add(commentTaskRepository.getReferenceById(i));
-        }
-        task.setComments(comments);
         List<User> users = new ArrayList<>();
-        for (var i : taskr.getUserIDs()) {
-            User user = userTaskRepository.findById(i).orElseThrow(() -> new RuntimeException("User not found"));
-            users.add(user);
-            user.getTasks().add(task);
-        }
         task.setUsers(users);
-
         return taskRepository.save(task);
     }
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    public TaskDTO updateStatus(TaskDTO taskDTO) {
+        Task task = taskRepository.findByName(taskDTO.getName());
+        task.setStatus(TaskStatus.valueOf( taskDTO.status));
+        taskRepository.save(task);
+        TaskDTO dto = new TaskDTO();
+        dto.setName(taskDTO.getName());
+        dto.setDescription(taskDTO.getDescription());
+        dto.setDeadline(taskDTO.getDeadline());
+        dto.setStatus(taskDTO.getStatus());
+        return dto;
     }
 }

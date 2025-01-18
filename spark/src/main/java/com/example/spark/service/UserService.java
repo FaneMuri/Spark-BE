@@ -58,4 +58,14 @@ public class UserService {
 
         return user;
     }
+
+    public User updateUserRole(String idString,String role) {
+        var x = findUserById(Long.parseLong(idString));
+        x.ifPresent(user -> user.setRole(Role.valueOf(role)));
+        if(x.isPresent()) {
+            userRepository.save(x.get());
+            return x.get();
+        }
+        return null;
+    }
 }

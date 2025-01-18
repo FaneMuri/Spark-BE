@@ -36,6 +36,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user, t.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .role(String.valueOf(user.getRole()))
                 .build();
     }
 

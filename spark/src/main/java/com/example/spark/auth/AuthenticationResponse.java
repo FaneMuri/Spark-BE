@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
     @JsonProperty("token")
     private String token;
+    @JsonProperty("role")
+    private String role;
 }
