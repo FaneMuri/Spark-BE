@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EventRequest implements Serializable {
+public class EventResponse implements Serializable {
     private Long id ;
     private String name;
     private String description;
@@ -20,6 +20,6 @@ public class EventRequest implements Serializable {
     private Long participantCount;
     private String location;
     private User organizer;
-    private byte[] image;
+    private String image;
     private List<Long> participants;
 }

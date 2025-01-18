@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -48,6 +47,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Event> organizedEvents;
+
+    // Many-to-Many Relationship with Events
+    @ManyToMany(mappedBy = "participants")
+    @JsonIgnore
+    private List<Event> events;
 
     // Relationship with Comment
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

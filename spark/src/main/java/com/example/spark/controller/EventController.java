@@ -28,7 +28,7 @@ public class EventController {
     }
 
     @GetMapping
-    public List<Event> getAllEvents(
+    public List<EventRequest> getAllEvents(
             @RequestHeader("Authorization") String auth
     ) {
         // This is how you get the user id
@@ -44,7 +44,7 @@ public class EventController {
                 .orElse(ResponseEntity.notFound().build());
     }
     @PostMapping
-    public ResponseEntity<HttpStatus> createEvent(@RequestBody EventRequest eventRequest) {
+    public ResponseEntity<HttpStatus> createEvent(@RequestBody EventResponse eventRequest) {
 
         Event event = eventService.saveEvent(eventRequest);
         if (event != null) {
@@ -53,6 +53,12 @@ public class EventController {
         else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/join/{id}/{idU}")
+    public ResponseEntity<HttpStatus> postEvent(@PathVariable Long id, @PathVariable Long idU) {
+        eventService.joinEvent(id,idU);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
